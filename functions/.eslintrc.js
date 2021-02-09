@@ -27,5 +27,6 @@ module.exports = {
     "quotes": ["error", "double"],
     "indent": ["error", 2],
     "@typescript-eslint/no-unused-vars": "error",
+    "max-len": ["off", 80],
   },
 };

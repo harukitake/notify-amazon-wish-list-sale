@@ -6,16 +6,17 @@ export const getSaleProductList = async (productList: ItemList[]) => {
   const saleProductList = [];
   for (let i = 0; i < productList.length; i++) {
     const product = productList[i];
-    const productRef = await db.where("title", "==", product.title)
+    const productRef = await db.where("id", "==", product.id)
       .get();
     const productDoc = productRef.docs[0];
     if (!productDoc) {
       // addする
       await db.add({
+        id: product.id,
         title: product.title,
         price: product.price,
         url: product.url,
-        imgUrl: product.url,
+        imgUrl: product.imgUrl,
       });
       continue;
     }

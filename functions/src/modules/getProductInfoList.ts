@@ -23,11 +23,14 @@ const scrapePage = async (page: Page) => {
   const selector = "div[id^='item_']";
   const itemList: ItemList[] = [];
   const list = await page.$$(selector);
-  console.log(list.length);
   for (let i = 0; i < list.length; i++) {
     const item = list[i];
     const titleSelector = "[id^='itemName_']";
     const titleElement = await item.$(titleSelector);
+    const elementIdObj = await titleElement?.getProperty("id");
+    const elementId: unknown = await elementIdObj?.jsonValue();
+    const id = toString(elementId).split("_")[1];
+
     const titleObj = await titleElement?.getProperty("textContent");
     const title: unknown = await titleObj?.jsonValue();
 
@@ -47,13 +50,13 @@ const scrapePage = async (page: Page) => {
     const imgUrl: unknown = await imgObj?.jsonValue();
 
     itemList.push({
+      id: toString(id),
       title: toString(title),
       price: formatPrice(toString(price)),
       url: toString(url),
       imgUrl: toString(imgUrl),
     });
   }
-  console.log(itemList);
   return itemList;
 };
 
